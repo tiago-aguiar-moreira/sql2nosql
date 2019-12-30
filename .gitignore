@@ -1,0 +1,8 @@
+.vs
+packages
+SQL2NoSQL.Core/bin/
+SQL2NoSQL.Core/obj/
+SQL2NoSQL.Core/packages/
+SQL2NoSQL.Test/bin/
+SQL2NoSQL.Test/obj/
+SQL2NoSQL.Test/packages/
