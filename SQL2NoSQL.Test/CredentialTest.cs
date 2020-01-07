@@ -3,6 +3,7 @@ using ExpectedObjects;
 using SQL2NoSQL.Core.Enum;
 using SQL2NoSQL.Core.Model;
 using System;
+using System.Collections.Generic;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -12,6 +13,7 @@ namespace SQL2NoSQL.Test
     {
         private readonly ITestOutputHelper _output;
         private readonly string _host;
+        private readonly int _port;
         private readonly string _user;
         private readonly string _password;
         private readonly string _databaseName;
@@ -26,6 +28,7 @@ namespace SQL2NoSQL.Test
             _faker = new Faker();
             
             _host = _faker.Internet.Ip();
+            _port = _faker.Random.Number(65535);
             _user = _faker.Internet.UserName();
             _password = _faker.Internet.Password();
             _databaseName = "marketplace";
@@ -64,11 +67,39 @@ namespace SQL2NoSQL.Test
         {
             var expectedConnectionString = $"Data Source={_host};Initial Catalog={_databaseName};User ID={_user};Password={_password}";
 
-            var credential = new CredentialSQL(_host, _user, _password, _databaseName, _databaseSQL);
-
-            var connectionString = credential.GetConnectionString();
+            var connectionString = new CredentialSQL(_host, _user, _password, _databaseName, _databaseSQL).GetConnectionString();
 
             Assert.Equal(expectedConnectionString, connectionString);
         }
+
+        [Fact(DisplayName = "Should create connection string, not sharded cluster, to MongoDB")]
+        public void ShouldCreateConnectionStringNotShardedClusterToMongoDB()
+        {
+            var expectedConnectionString = $"mongodb://{_user}:{_password}@{_host}:{_port}";
+
+            var listConnectionString = new List<string>
+            {
+                _host
+            };
+
+            var connectionString = new CredentialMongoDB(listConnectionString, _port, _user, _password, _databaseName).GetConnectionString();
+
+            Assert.Equal(expectedConnectionString, connectionString);
+        }
+
+        //[Fact(DisplayName = "Should create connection string, sharded cluster, to MongoDB")]
+        //public void ShouldCreateConnectionStringShardedClusterToMongoDB()
+        //{
+        //    var expectedConnectionString = $"mongodb://{_user}:{_password}@{_host}:{_port}";
+
+        //    var listConnectionString = new List<string>
+        //    {
+        //        _host
+        //    };
+
+        //    var connectionString = new CredentialMongoDB(listConnectionString, _port, _user, _password, _databaseName).GetConnectionString();
+
+        //    Assert.Equal(expectedConnectionString, connectionString);
+        //}
     }
 }

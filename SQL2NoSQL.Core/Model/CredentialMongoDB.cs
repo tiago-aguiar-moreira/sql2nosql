@@ -18,11 +18,12 @@ namespace SQL2NoSQL.Core.Model
             User = user;
             Password = password;
             DatabaseName = databasename;
+            Port = port;
         }
 
         public string GetConnectionString()
         {
-            var host = string.Join(',', Host.Select(s => string.Concat(s, Port)));
+            var host = string.Join(',', Host.Select(s => string.Concat(s, ":", Port)));
 
             return $"mongodb://{User}:{Password}@{host}";
         }
