@@ -49,7 +49,7 @@ namespace SQL2NoSQL.Test
                 DatabaseSQL = _databaseSQL
             };
 
-            var credential = new Credential(
+            var credential = new CredentialSQL(
                 expectedCredential.Host,
                 expectedCredential.User,
                 expectedCredential.Password,
@@ -64,7 +64,7 @@ namespace SQL2NoSQL.Test
         {
             var expectedConnectionString = $"Data Source={_host};Initial Catalog={_databaseName};User ID={_user};Password={_password}";
 
-            var credential = new Credential(_host, _user, _password, _databaseName, _databaseSQL);
+            var credential = new CredentialSQL(_host, _user, _password, _databaseName, _databaseSQL);
 
             var connectionString = credential.GetConnectionString();
 

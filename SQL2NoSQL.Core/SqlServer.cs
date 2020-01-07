@@ -9,7 +9,7 @@ namespace SQL2NoSQL.Core
     {
         private SqlConnection _connection;
 
-        public SqlServer(Credential credential)
+        public SqlServer(CredentialSQL credential)
         {
             _connection = new SqlConnection(credential.GetConnectionString());
         }
